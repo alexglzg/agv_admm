@@ -8,13 +8,29 @@ project(agv_admm)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
+roscpp
+rospy 
+std_msgs 
+genmsg
+sensor_msgs
+tf2
+tf2_ros
+tf2_geometry_msgs
+gazebo_ros
+message_generation
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+
+set(CASADI_DIR "/usr/local")
+set(CMAKE_PREFIX_PATH ${CASADI_DIR} ${CMAKE_PREFIX_PATH})
+set(PKG_CONFIG_PATH ${CASADI_DIR}/lib/pkgconfig ${PKG_CONFIG_PATH})
+find_package(PkgConfig REQUIRED)
+pkg_search_module(CASADI casadi REQUIRED)
+
+find_package(PkgConfig)
+pkg_search_module(IPOPT ipopt REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -47,11 +63,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+ add_message_files(
+   FILES
+   FloatArray.msg
+ )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -68,10 +83,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs
+   geometry_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -118,6 +134,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN_3_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -204,3 +221,12 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+link_directories(${CASADI_LIBRARY_DIRS})
+add_executable(u_admm src/u_admm.cpp)
+target_link_libraries(u_admm ${catkin_LIBRARIES} ipopt ${CASADI_LIBRARIES})
+target_include_directories(u_admm PUBLIC ${CASADI_INCLUDEDIR} ${EIGEN_INC})
+
+add_executable(b_admm src/b_admm.cpp)
+target_link_libraries(b_admm ${catkin_LIBRARIES} ipopt ${CASADI_LIBRARIES})
+target_include_directories(b_admm PUBLIC ${CASADI_INCLUDEDIR} ${EIGEN_INC})
