@@ -222,6 +222,18 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
+add_executable(u_kinematics src/u_kinematics.cpp)
+target_link_libraries(u_kinematics ${catkin_LIBRARIES})
+
+add_executable(u_tf2_broadcaster src/u_tf2_broadcaster.cpp)
+target_link_libraries(u_tf2_broadcaster ${catkin_LIBRARIES})
+
+add_executable(b_kinematics src/b_kinematics.cpp)
+target_link_libraries(b_kinematics ${catkin_LIBRARIES})
+
+add_executable(b_tf2_broadcaster src/b_tf2_broadcaster.cpp)
+target_link_libraries(b_tf2_broadcaster ${catkin_LIBRARIES})
+
 link_directories(${CASADI_LIBRARY_DIRS})
 add_executable(u_admm src/u_admm.cpp)
 target_link_libraries(u_admm ${catkin_LIBRARIES} ipopt ${CASADI_LIBRARIES})

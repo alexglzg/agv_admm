@@ -490,8 +490,8 @@ public:
 
         // update other agents' guesses of current agent trajectory (Z_ji) ocpX parameter
         for (int l = 0; l < Nhor_plus_one; l++) {
-            copy_ji(0,l) = neighbor_local_copies[Nhor_plus_one+l];
-            copy_ji(1,l) = neighbor_local_copies[Nhor_plus_one+l+Nhor_plus_one];
+            copy_ji(0,l) = neighbor_local_copies[l];
+            copy_ji(1,l) = neighbor_local_copies[l+Nhor_plus_one];
         }
 
         nav_msgs::Path horizon_path;
@@ -528,8 +528,8 @@ public:
 
         // update other agents' multipliers (lambda_ji) ocpX parameter
         for (int l = 0; l < Nhor_plus_one; l++) {
-            multi_ji(0,l) = neighbor_lambda_multipliers[Nhor_plus_one+l];
-            multi_ji(1,l) = neighbor_lambda_multipliers[Nhor_plus_one+l+Nhor_plus_one];
+            multi_ji(0,l) = neighbor_lambda_multipliers[l];
+            multi_ji(1,l) = neighbor_lambda_multipliers[l+Nhor_plus_one];
         }
 
         if (ocpX_flag){

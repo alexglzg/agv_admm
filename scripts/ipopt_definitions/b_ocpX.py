@@ -46,7 +46,7 @@ y_ref = ocpX.register_parameter(MX.sym('y_ref', 1))
 distance = sqrt( (x_ref - x)**2 + (y_ref - y)**2 )
 ocpX.add_objective(ocpX.sum((distance)**2))
 ocpX.add_objective(ocpX.at_tf((distance)**2))
-ocpX.add_objective(ocpX.sum(v**2, include_last=True))
+ocpX.add_objective(ocpX.sum(v**2 + 0.5*delta**2, include_last=True))
 ocpX.subject_to( (-b_max_speed <= v) <= b_max_speed )
 ocpX.subject_to( (-b_max_steering <= delta) <= b_max_steering )
 
